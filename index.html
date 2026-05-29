@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Levantamiento de Necesidades Tecnológicas</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f5f4f0;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #d8d4cc;
+    border-radius: 4px;
+    padding: 3rem 3.5rem;
+  }
+
+  .header {
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .meta-field label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .meta-field input[type="text"],
+  .meta-field input[type="date"] {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0;
+    font-size: 14px;
+    font-family: Georgia, serif;
+    color: #1a1a1a;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .meta-field input:focus { border-bottom-color: #1a1a1a; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.75rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 1rem;
+  }
+
+  thead tr { background: #1a1a1a; color: #fff; }
+
+  thead th {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  thead th.center { text-align: center; }
+
+  tbody tr {
+    border-bottom: 1px solid #e8e4dc;
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: #faf9f6; }
+
+  tbody td { padding: 6px 8px; vertical-align: middle; }
+  tbody td.center { text-align: center; }
+
+  tbody td input[type="text"],
+  tbody td input[type="number"] {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-family: Georgia, serif;
+    color: #1a1a1a;
+    outline: none;
+    padding: 4px 4px;
+    border-radius: 2px;
+    transition: background 0.15s;
+  }
+
+  tbody td input[type="number"] { text-align: center; }
+  tbody td input:focus { background: #f0ede6; }
+  tbody td input::placeholder { color: #bbb; font-style: italic; }
+
+  .row-num {
+    width: 28px;
+    text-align: center;
+    font-size: 11px;
+    color: #aaa;
+    font-style: italic;
+    padding: 6px 4px;
+  }
+
+  .del-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 2px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .del-btn:hover { color: #c0392b; background: #fdecea; }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1.5px solid #1a1a1a;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .btn-primary   { background: #1a1a1a; color: #fff; }
+  .btn-primary:hover  { background: #333; }
+  .btn-secondary { background: transparent; color: #1a1a1a; }
+  .btn-secondary:hover { background: #f0ede6; }
+  .btn-send {
+    background: #1a1a1a;
+    color: #fff;
+    margin-left: auto;
+  }
+  .btn-send:hover { background: #333; }
+  .btn-send:disabled {
+    background: #aaa;
+    border-color: #aaa;
+    cursor: not-allowed;
+  }
+
+  .notes-area {
+    margin-top: 2rem;
+    border-top: 1px solid #e8e4dc;
+    padding-top: 1.5rem;
+  }
+
+  .notes-area label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+
+  .notes-area textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: Georgia, serif;
+    color: #1a1a1a;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #faf9f6;
+  }
+
+  .notes-area textarea:focus { border-color: #1a1a1a; }
+
+  .footer-note {
+    margin-top: 2rem;
+    font-size: 11px;
+    color: #999;
+    font-style: italic;
+    border-top: 1px solid #e8e4dc;
+    padding-top: 1rem;
+  }
+
+  /* ── TOAST DE NOTIFICACIÓN ── */
+  #toast {
+    display: none;
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 3px;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    z-index: 999;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transition: opacity 0.3s;
+  }
+  #toast.ok    { background: #1a1a1a; color: #fff; }
+  #toast.error { background: #c0392b; color: #fff; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { border: none; padding: 1.5rem; box-shadow: none; }
+    .actions { display: none; }
+    .del-btn  { display: none; }
+    .row-num  { display: none; }
+    #toast    { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Levantamiento de Necesidades Tecnológicas</h1>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta-field">
+      <label>Nombre</label>
+      <input type="text" id="campo-nombre" placeholder="">
+    </div>
+    <div class="meta-field" style="grid-column: 1 / -1; max-width: 260px;">
+      <label>Fecha de envío</label>
+      <input type="date" id="campo-fecha">
+    </div>
+  </div>
+
+  <p class="section-label">Detalle de necesidades</p>
+
+  <table id="needs-table">
+    <colgroup>
+      <col style="width:28px">
+      <col style="width:22%">
+      <col style="width:20%">
+      <col style="width:9%">
+      <col style="width:19%">
+      <col style="width:17%">
+      <col style="width:32px">
+    </colgroup>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Necesidad / Uso</th>
+        <th>Producto</th>
+        <th class="center">Cantidad</th>
+        <th>Marca referencial</th>
+        <th>Precio referencial</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+
+  <div class="actions">
+    <button class="btn btn-primary"    onclick="addRow()">+ Agregar fila</button>
+    <button class="btn btn-secondary"  onclick="window.print()">Imprimir / PDF</button>
+    <button class="btn btn-send" id="btn-enviar" onclick="enviarFormulario()">Enviar →</button>
+  </div>
+
+  <div class="notes-area">
+    <label>Observaciones adicionales</label>
+    <textarea id="campo-obs" placeholder="Indique aquí cualquier información complementaria, urgencias, o enlaces a cotizaciones…"></textarea>
+  </div>
+
+  <p class="footer-note">
+    Los campos de marca y precio son referenciales y no implican compromiso de adquisición.
+  </p>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ── URL DEL SCRIPT (Apps Script Web App) ────────────────────────────────────
+  var SCRIPT_URL = 'https://script.google.com/a/macros/usach.cl/s/AKfycbzipD0MsKyYC9y9qS3GmKvApfKPiJR1qUX5mYZO8Uzs-L24hALd_7Q4-PLXOOKlpDBn/exec';
+
+  // ── TABLA DINÁMICA ──────────────────────────────────────────────────────────
+  var placeholders = [
+    ["Ej: Impresión de informes mensuales", "Ej: Tóner láser negro", "2", "HP", "$18.000"],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ];
+
+  var rowCount = 0;
+
+  function createRow(ph) {
+    rowCount++;
+    var tr = document.createElement("tr");
+    var p  = ph || ["", "", "", "", ""];
+
+    var tdNum = document.createElement("td");
+    tdNum.className   = "row-num";
+    tdNum.textContent = rowCount;
+    tr.appendChild(tdNum);
+
+    [0, 1, 2, 3, 4].forEach(function(i) {
+      var td = document.createElement("td");
+      if (i === 2) {
+        td.className = "center";
+        var inp  = document.createElement("input");
+        inp.type = "number";
+        inp.min  = "1";
+        inp.placeholder = "—";
+        inp.value = p[2] || "";
+        inp.dataset.col = "cantidad";
+        td.appendChild(inp);
+      } else {
+        var inp  = document.createElement("input");
+        inp.type = "text";
+        inp.placeholder = p[i] || "";
+        var cols = ["necesidad", "producto", "", "marca", "precio"];
+        inp.dataset.col = cols[i];
+        td.appendChild(inp);
+      }
+      tr.appendChild(td);
+    });
+
+    var tdDel = document.createElement("td");
+    tdDel.style.textAlign = "center";
+    var btn = document.createElement("button");
+    btn.className   = "del-btn";
+    btn.title       = "Eliminar fila";
+    btn.textContent = "×";
+    btn.onclick = function() { tr.remove(); renumber(); };
+    tdDel.appendChild(btn);
+    tr.appendChild(tdDel);
+
+    return tr;
+  }
+
+  function renumber() {
+    document.querySelectorAll("#table-body tr").forEach(function(tr, i) {
+      var num = tr.querySelector(".row-num");
+      if (num) num.textContent = i + 1;
+    });
+    rowCount = document.querySelectorAll("#table-body tr").length;
+  }
+
+  function addRow() {
+    document.getElementById("table-body").appendChild(createRow(["", "", "", "", ""]));
+  }
+
+  placeholders.forEach(function(p) {
+    document.getElementById("table-body").appendChild(createRow(p));
+  });
+
+  // ── TOAST ───────────────────────────────────────────────────────────────────
+  function mostrarToast(mensaje, tipo) {
+    var t = document.getElementById('toast');
+    t.textContent = mensaje;
+    t.className   = tipo;
+    t.style.display = 'block';
+    t.style.opacity = '1';
+    setTimeout(function() {
+      t.style.opacity = '0';
+      setTimeout(function() { t.style.display = 'none'; }, 300);
+    }, 4000);
+  }
+
+  // ── ENVÍO A GOOGLE SHEETS ───────────────────────────────────────────────────
+  function enviarFormulario() {
+    var nombre = document.getElementById('campo-nombre').value.trim();
+    var fecha  = document.getElementById('campo-fecha').value;
+
+    if (!nombre) {
+      mostrarToast('Por favor ingrese su nombre antes de enviar.', 'error');
+      document.getElementById('campo-nombre').focus();
+      return;
+    }
+
+    // Recopilar filas de la tabla
+    var filas = document.querySelectorAll('#table-body tr');
+    var items = {};
+    var tieneAlMenosUno = false;
+
+    filas.forEach(function(tr, idx) {
+      var num       = idx + 1;
+      var inputs    = tr.querySelectorAll('input[data-col]');
+      var necesidad = '', producto = '', cantidad = '', marca = '', precio = '';
+
+      inputs.forEach(function(inp) {
+        if (inp.dataset.col === 'necesidad') necesidad = inp.value.trim();
+        if (inp.dataset.col === 'producto')  producto  = inp.value.trim();
+        if (inp.dataset.col === 'cantidad')  cantidad  = inp.value.trim();
+        if (inp.dataset.col === 'marca')     marca     = inp.value.trim();
+        if (inp.dataset.col === 'precio')    precio    = inp.value.trim();
+      });
+
+      if (necesidad || producto || cantidad) tieneAlMenosUno = true;
+
+      items['item' + num] = {
+        necesidad: necesidad,
+        producto:  producto,
+        cantidad:  cantidad,
+        marca:     marca,
+        precio:    precio
+      };
+    });
+
+    // Completar hasta ítem 10 si hay menos filas
+    for (var i = filas.length + 1; i <= 10; i++) {
+      items['item' + i] = { necesidad:'', producto:'', cantidad:'', marca:'', precio:'' };
+    }
+
+    if (!tieneAlMenosUno) {
+      mostrarToast('Ingrese al menos un ítem antes de enviar.', 'error');
+      return;
+    }
+
+    var payload = {
+      nombre:        nombre,
+      fechaEnvio:    fecha,
+      observaciones: document.getElementById('campo-obs').value.trim()
+    };
+
+    // Mezclar ítems en el payload
+    Object.keys(items).forEach(function(k) { payload[k] = items[k]; });
+
+    // Deshabilitar botón mientras envía
+    var btnEnviar = document.getElementById('btn-enviar');
+    btnEnviar.disabled     = true;
+    btnEnviar.textContent  = 'Enviando…';
+
+    fetch(SCRIPT_URL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    })
+    .then(function() {
+      mostrarToast('✓ Solicitud enviada correctamente.', 'ok');
+      btnEnviar.disabled    = false;
+      btnEnviar.textContent = 'Enviar →';
+    })
+    .catch(function(err) {
+      mostrarToast('Error al enviar. Intente nuevamente.', 'error');
+      btnEnviar.disabled    = false;
+      btnEnviar.textContent = 'Enviar →';
+      console.error(err);
+    });
+  }
+</script>
+</body>
+</html>
